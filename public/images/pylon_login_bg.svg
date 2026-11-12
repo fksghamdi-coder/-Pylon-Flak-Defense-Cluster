@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="100%" height="100%" preserveAspectRatio="none">
+  <defs>
+    {/* Dramatic Sunset Sky Gradient */}
+    <linearGradient id="bgSunsetSky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0a1324" />
+      <stop offset="35%" stop-color="#1e293b" />
+      <stop offset="65%" stop-color="#78350f" />
+      <stop offset="100%" stop-color="#d97706" stop-opacity="0.9" />
+    </linearGradient>
+
+    {/* Coastal Sea & Water Reflective Gradient */}
+    <linearGradient id="bgSea" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#064e3b" />
+    </linearGradient>
+
+    {/* Laser Interceptor Beams */}
+    <linearGradient id="redLaser" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ef4444" stop-opacity="1" />
+      <stop offset="100%" stop-color="#f87171" stop-opacity="0.5" />
+    </linearGradient>
+
+    <linearGradient id="greenDataLink" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#34d399" stop-opacity="0.3" />
+    </linearGradient>
+
+    {/* Holographic Shield Dome Glows */}
+    <radialGradient id="shieldGlow1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.35" />
+      <stop offset="70%" stop-color="#0284c7" stop-opacity="0.12" />
+      <stop offset="100%" stop-color="#0369a1" stop-opacity="0" />
+    </radialGradient>
+
+    <radialGradient id="shieldGlow2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#34d399" stop-opacity="0.35" />
+      <stop offset="70%" stop-color="#059669" stop-opacity="0.12" />
+      <stop offset="100%" stop-color="#047857" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  {/* Background Sky & Terrain */}
+  <rect width="1440" height="900" fill="url(#bgSunsetSky)" />
+  <rect x="0" y="240" width="1440" height="120" fill="url(#bgSea)" opacity="0.85" />
+
+  {/* Refinery Silhouettes */}
+  <g opacity="0.7">
+    <rect x="160" y="270" width="80" height="40" rx="4" fill="#0f172a" stroke="#334155" />
+    <rect x="250" y="260" width="55" height="50" rx="4" fill="#0f172a" stroke="#334155" />
+    <line x1="320" y1="230" x2="320" y2="310" stroke="#f59e0b" stroke-width="2" />
+    <circle cx="320" cy="228" r="5" fill="#f59e0b" />
+  </g>
+
+  {/* Mountain Ridges */}
+  <path d="M 0 360 Q 200 320 450 350 Q 800 310 1150 340 Q 1300 320 1440 350 L 1440 900 L 0 900 Z" fill="#1c1917" opacity="0.9" />
+  <path d="M 0 420 Q 300 380 650 410 Q 1000 370 1440 400 L 1440 900 L 0 900 Z" fill="#0c0a09" />
+
+  {/* Catenary High Voltage Lines */}
+  <path d="M 0 280 Q 400 360 800 280 T 1440 280" fill="none" stroke="#525252" stroke-width="2.5" />
+  <path d="M 0 310 Q 400 390 800 310 T 1440 310" fill="none" stroke="#525252" stroke-width="2.5" />
+
+  {/* Tower 1 (Left - Radar & Laser) */}
+  <g>
+    <circle cx="420" cy="250" r="170" fill="url(#shieldGlow1)" />
+    <circle cx="420" cy="250" r="170" fill="none" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.85" />
+    <polygon points="370,550 405,250 435,250 470,550" fill="#1c1917" stroke="#38bdf8" stroke-width="2.5" />
+    <line x1="380" y1="480" x2="460" y2="480" stroke="#0284c7" stroke-width="2" />
+    <line x1="390" y1="410" x2="450" y2="410" stroke="#0284c7" stroke-width="2" />
+    <line x1="320" y1="360" x2="520" y2="360" stroke="#38bdf8" stroke-width="3.5" />
+    <circle cx="420" cy="222" r="18" fill="#0369a1" stroke="#38bdf8" stroke-width="2.5" />
+    <line x1="435" y1="230" x2="820" y2="80" stroke="url(#redLaser)" stroke-width="4" />
+    <circle cx="820" cy="80" r="9" fill="#ef4444" />
+  </g>
+
+  {/* Tower 2 (Center - Air Defense Cannon) */}
+  <g>
+    <circle cx="800" cy="280" r="180" fill="url(#shieldGlow2)" />
+    <circle cx="800" cy="280" r="180" fill="none" stroke="#34d399" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.85" />
+    <polygon points="750,580 785,280 815,280 850,580" fill="#1c1917" stroke="#10b981" stroke-width="2.5" />
+    <line x1="760" y1="500" x2="840" y2="500" stroke="#059669" stroke-width="2" />
+    <circle cx="800" cy="252" r="18" fill="#047857" stroke="#34d399" stroke-width="2.5" />
+  </g>
+
+  {/* Tower 3 (Right - VLS Missiles) */}
+  <g>
+    <circle cx="1180" cy="310" r="160" fill="url(#shieldGlow1)" />
+    <circle cx="1180" cy="310" r="160" fill="none" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.85" />
+    <polygon points="1130,600 1165,310 1195,310 1230,600" fill="#1c1917" stroke="#38bdf8" stroke-width="2.5" />
+    <circle cx="1180" cy="282" r="18" fill="#0369a1" stroke="#38bdf8" stroke-width="2.5" />
+  </g>
+
+  {/* Header & HUD Overlays */}
+  <g font-family="monospace" font-size="13" font-weight="bold">
+    <rect x="40" y="30" width="360" height="55" rx="8" fill="#020617" fill-opacity="0.9" stroke="#059669" stroke-width="1.5" />
+    <text x="58" y="54" fill="#10b981" font-size="14">PROJECT PYLON-FLAK BASTION</text>
+    <text x="58" y="72" fill="#94a3b8" font-size="11">Tri-Tower Air Defense Clusters · 380kV Grid</text>
+  </g>
+
+  <g font-family="sans-serif" text-anchor="end">
+    <rect x="1040" y="30" width="360" height="55" rx="8" fill="#020617" fill-opacity="0.9" stroke="#059669" stroke-width="1.5" />
+    <text x="1380" y="54" fill="#ffffff" font-size="15" font-weight="bold">حصون الدفاع الجوي الشبكية</text>
+    <text x="1380" y="72" fill="#34d399" font-size="11" font-family="monospace">المملكة العربية السعودية · وزارة الدفاع</text>
+  </g>
+</svg>

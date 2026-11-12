@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>النظام الهندسية المتطور - لوحة القيادة المركزية</title>
+    <!-- خط نظام عربي عالي الجودة -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #060913;
+            --surface: #0f172a;
+            --surface-glass: rgba(15, 23, 42, 0.75);
+            --neon-cyan: #06b6d4;
+            --neon-purple: #a855f7;
+            --neon-blue: #3b82f6;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-glow: rgba(6, 182, 212, 0.35);
+            --border-glow-purple: rgba(168, 85, 247, 0.35);
+            --shadow-neon: 0 0 25px rgba(6, 182, 212, 0.2);
+            --shadow-neon-purple: 0 0 25px rgba(168, 85, 247, 0.2);
+            --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* خلفية نيون تفاعلية خفيفة */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 50% 30%, rgba(6, 182, 212, 0.05) 0%, rgba(168, 85, 247, 0.03) 40%, transparent 70%);
+            z-index: -1;
+            pointer-events-none;
+        }
+
+        /* رأس الصفحة العائم الديناميكي */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(16px);
+            background: var(--surface-glass);
+            border-bottom: 1px solid rgba(6, 182, 212, 0.2);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: transform 0.4s var(--transition-smooth), background 0.3s ease;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.5);
+            font-weight: 900;
+            font-size: 1.25rem;
+            color: #fff;
+        }
+
+        .logo-text h1 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #fff, var(--neon-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-text span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+
+        /* التبويبات العائمة مع مؤشر نابضي */
+        .tabs-wrapper {
+            position: relative;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid var(--border-glow);
+            border-radius: 9999px;
+            padding: 0.35rem;
+            display: flex;
+            gap: 0.25rem;
+            box-shadow: var(--shadow-neon);
+        }
+
+        .tab-btn {
+            position: relative;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.5rem 1.25rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            z-index: 2;
+            transition: color 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .tab-btn.active {
+            color: #fff;
+        }
+
+        .tab-indicator {
+            position: absolute;
+            top: 0.35rem;
+            bottom: 0.35rem;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-blue));
+            border-radius: 9999px;
+            z-index: 1;
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.6);
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), width 0.3s ease;
+            pointer-events: none;
+        }
+
+        /* منطقة المحتوى الرئيسية */
+        main {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            flex: 1;
+            width: 100%;
+        }
+
+        .tab-content {
+            display: none;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* شبكة البطاقات والإطارات مع تأثيرات 3D و Neon Hover */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .card {
+            position: relative;
+            background: var(--surface-glass);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 1.75rem;
+            backdrop-filter: blur(12px);
+            overflow: hidden;
+            transform-style: preserve-3d;
+            will-change: transform;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            background: radial-gradient(800px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(6, 182, 212, 0.2), transparent 40%);
+            border-radius: inherit;
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card:hover {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.15), inset 0 0 20px rgba(6, 182, 212, 0.05);
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* أزرار تفاعلية مع موجة نقر (Ripple) */
+        .btn-neon {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(168, 85, 247, 0.1));
+            border: 1px solid var(--neon-cyan);
+            color: var(--text-main);
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.15);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .btn-neon:hover {
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-blue));
+            color: #000;
+            box-shadow: 0 0 25px rgba(6, 182, 212, 0.5);
+            border-color: transparent;
+        }
+
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(0);
+            animation: ripple-anim 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple-anim {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* شريط التنقل العائم أسفل الصفحة */
+        .bottom-floating-nav {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glow);
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), var(--shadow-neon);
+            z-index: 1000;
+            transition: transform 0.4s var(--transition-smooth), opacity 0.4s ease;
+            opacity: 0;
+        }
+
+        .bottom-floating-nav.visible {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .nav-status-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #10b981;
+            animation: pulse-glow 2s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        /* إحصائيات وعدادات فيزيائية */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--surface-glass);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 1.25rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--neon-cyan);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #fff;
+            margin-top: 0.5rem;
+            text-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* تحسين التجاوب مع الجوال */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            .tabs-wrapper {
+                width: 100%;
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding: 0.25rem;
+            }
+            .tab-btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* تقليل الحركة عند تفعيل تفضيلات النظام */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- رأس الصفحة مع الشعار والتبويبات العائمة -->
+    <header id="main-header">
+        <div class="header-container">
+            <div class="logo-area">
+                <div class="logo-icon">EN</div>
+                <div class="logo-text">
+                    <h1>النظام الهندسي الذكي</h1>
+                    <span>Enterprise ERP & Tactical Dashboard</span>
+                </div>
+            </div>
+
+            <!-- التبويبات العائمة مع المؤشر النابضي -->
+            <nav class="tabs-wrapper" id="tabs-nav">
+                <div class="tab-indicator" id="tab-indicator"></div>
+                <button class="tab-btn active" data-target="overview">نظرة عامة</button>
+                <button class="tab-btn" data-target="radar">الرصد والتتبع</button>
+                <button class="tab-btn" data-target="specs">المواصفات الهندسية</button>
+                <button class="tab-btn" data-target="simulation">المحاكاة الحية</button>
+                <button class="tab-btn" data-target="reports">التقارير والملفات</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main>
+        <!-- تبويب نظرة عامة -->
+        <section id="overview" class="tab-content active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">كفاءة المنظومة</div>
+                    <div class="stat-number" data-target="99.8">0%</div>
+                </div>
+                <div class="stat-card" style="border-color: var(--neon-purple);">
+                    <div class="stat-label">المعدات النشطة</div>
+                    <div class="stat-number" data-target="1420">0</div>
+                </div>
+                <div class="stat-card" style="border-color: var(--neon-blue);">
+                    <div class="stat-label">معدل الاستجابة الفيزيائية</div>
+                    <div class="stat-number" data-target="1.2">0ms</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">مستوى التأمين الأمني</div>
+                    <div class="stat-number">عالي جداً</div>
+                </div>
+            </div>
+
+            <div class="grid-cards">
+                <div class="card" data-tilt>
+                    <div class="card-content">
+                        <div class="card-title">⚡ الإدارة الهندسية المتقدمة</div>
+                        <div class="card-desc">لوحة تحكم متكاملة تدار عبر أنظمة فيزيائية حقيقية (Spring Dynamics) مع استجابة بصرية مذهلة ومؤشرات نيون عائمة.</div>
+                        <button class="btn-neon" onclick="triggerRipple(event)">استكشاف النظام</button>
+                    </div>
+                </div>
+                <div class="card" data-tilt>
+                    <div class="card-content">
+                        <div class="card-title">🛡️ حماية البيانات والأمان</div>
+                        <div class="card-desc">تشفير كامل للعمليات والتقارير مع مراقبة حية للأداء وخوارزميات منع التجمد واستقرار المتصفح.</div>
+                        <button class="btn-neon" onclick="triggerRipple(event)">فحص الأمان</button>
+                    </div>
+                </div>
+                <div class="card" data-tilt>
+                    <div class="card-content">
+                        <div class="card-title">📊 التحليل والتوليد الآلي</div>
+                        <div class="card-desc">تصدير التقارير الهندسية وجداول الكميات بدقة فائقة مع دعم كامل للاتجاه العربي وتخطيط الصفحات.</div>
+                        <button class="btn-neon" onclick="triggerRipple(event)">إنشاء تقرير</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- تبويب الرصد والتتبع -->
+        <section id="radar" class="tab-content">
+            <div class="card" style="padding: 2.5rem; text-align: center;">
+                <h2>شاشة الرصد التكتيكي المتطور</h2>
+                <p class="card-desc" style="margin-top: 1rem;">نظام رادار عالي الدقة يعرض الحركات النشطة مع تأثيرات الإضاءة النيون الديناميكية.</p>
+                <div style="margin: 2rem auto; width: 250px; height: 250px; border: 2px dashed var(--neon-cyan); border-radius: 50%; display: flex; align-items: center; justify-content: center; position: relative; box-shadow: var(--shadow-neon);">
+                    <div style="width: 12px; height: 12px; background: var(--neon-cyan); border-radius: 50%; box-shadow: 0 0 20px var(--neon-cyan);"></div>
+                </div>
+                <button class="btn-neon" onclick="triggerRipple(event)">تحديث نطاق الرصد</button>
+            </div>
+        </section>
+
+        <!-- تبويب المواصفات الهندسية -->
+        <section id="specs" class="tab-content">
+            <div class="grid-cards">
+                <div class="card" data-tilt>
+                    <div class="card-content">
+                        <div class="card-title">📐 المخططات الهندسية</div>
+                        <div class="card-desc">معاملات الأبعاد والهندسة الإنشائية للمشاريع الكبرى مع مقاييس دقيقة.</div>
+                    </div>
+                </div>
+                <div class="card" data-tilt>
+                    <div class="card-content">
+                        <div class="card-title">⚙️ الخواص الفيزيائية</div>
+                        <div class="card-desc">معاملات التخميد (Damping) والمرونة (Stiffness) لضمان حركة سلسة ومستقرة.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- تبويب المحاكاة الحية -->
+        <section id="simulation" class="tab-content">
+            <div class="card" style="padding: 2.5rem;">
+                <h2>محاكاة العمليات الحية</h2>
+                <p class="card-desc" style="margin-top: 1rem;">محاكي تفاعلي لاختبار الأحمال الفيزيائية واستجابة النظام تحت الضغط العالي.</p>
+                <button class="btn-neon" style="margin-top: 1.5rem;" onclick="triggerRipple(event)">بدء اختبار الضغط</button>
+            </div>
+        </section>
+
+        <!-- تبويب التقارير والملفات -->
+        <section id="reports" class="tab-content">
+            <div class="card" style="padding: 2.5rem;">
+                <h2>أرشيف التقارير والملفات الرسمية</h2>
+                <p class="card-desc" style="margin-top: 1rem;">استعراض وتحميل كافة التقارير الهندسية وملفات الاعتماد الموثقة.</p>
+                <button class="btn-neon" style="margin-top: 1.5rem;" onclick="triggerRipple(event)">تحميل التقرير الشامل (PDF)</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- شريط التنقل العائم أسفل الصفحة (يظهر عند التمرير) -->
+    <div class="bottom-floating-nav" id="bottom-nav">
+        <div class="nav-status-item">
+            <div class="status-dot"></div>
+            <span>النظام نشط ومستقر</span>
+        </div>
+        <div style="width: 1px; height: 20px; background: rgba(255,255,255,0.1)"></div>
+        <button class="tab-btn active" style="padding: 0.35rem 1rem; font-size: 0.8rem;" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">العودة للأعلى ⬆</button>
+    </div>
+
+    <script>
+        /* ==========================================================
+           محرك الفيزياء والحركة (Spring Physics & UI Animation Engine)
+           ========================================================== */
+
+        // إدارة التبويبات والمؤشر النابضي
+        const tabsNav = document.getElementById('tabs-nav');
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const tabIndicator = document.getElementById('tab-indicator');
+
+        function updateIndicator(activeBtn) {
+            const navRect = tabsNav.getBoundingClientRect();
+            const btnRect = activeBtn.getBoundingClientRect();
+            const left = btnRect.left - navRect.left;
+            const width = btnRect.width;
+
+            tabIndicator.style.transform = `translateX(${left}px)`;
+            tabIndicator.style.width = `${width}px`;
+        }
+
+        // تهيئة المؤشر عند التحميل
+        window.addEventListener('load', () => {
+            const activeBtn = document.querySelector('.tab-btn.active');
+            if (activeBtn) updateIndicator(activeBtn);
+        });
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                tabBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                updateIndicator(btn);
+
+                const target = btn.getAttribute('data-target');
+                tabContents.forEach(content => {
+                    if (content.id === target) {
+                        content.classList.add('active');
+                    } else {
+                        content.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        // تأثيرات الإمالة ثلاثية الأبعاد (3D Tilt) وتتبع المؤشر للبطاقات
+        const cards = document.querySelectorAll('.card');
+
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -7;
+                const rotateY = ((x - centerX) / centerX) * 7;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)';
+            });
+        });
+
+        // موجة النقر (Ripple Effect) للأزرار
+        function triggerRipple(e) {
+            const btn = e.currentTarget;
+            const circle = document.createElement('span');
+            const diameter = Math.max(btn.clientWidth, btn.clientHeight);
+            const radius = diameter / 2;
+
+            circle.style.width = circle.style.height = `${diameter}px`;
+            circle.style.left = `${e.clientX - btn.getBoundingClientRect().left - radius}px`;
+            circle.style.top = `${e.clientY - btn.getBoundingClientRect().top - radius}px`;
+            circle.classList.add('ripple');
+
+            const ripple = btn.getElementsByClassName('ripple')[0];
+            if (ripple) {
+                ripple.remove();
+            }
+
+            btn.appendChild(circle);
+        }
+
+        // شريط التنقل العائم السفلي يظهر ويختفي حسب التمرير
+        const bottomNav = document.getElementById('bottom-nav');
+        let lastScrollY = window.scrollY;
+
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+            if (currentScrollY > 200) {
+                bottomNav.classList.add('visible');
+            } else {
+                bottomNav.classList.remove('visible');
+            }
+            lastScrollY = currentScrollY;
+        }, { passive: true });
+
+        // تحسين الأداء وحلقة طلب الإطار (requestAnimationFrame) واحدة فقط
+        let isIdle = true;
+        function animationLoop() {
+            // حلقة رسم خفيفة ونظام فيزيائي لتحديث العدادات أو المؤشرات عند الحاجة
+            if (!isIdle) {
+                // تنفيذ التحديثات إن وجدت
+            }
+            requestAnimationFrame(animationLoop);
+        }
+        requestAnimationFrame(animationLoop);
+
+        // Debounce عند تغيير الحجم لإعادة ضبط مؤشر التبويبات
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                const activeBtn = document.querySelector('.tab-btn.active');
+                if (activeBtn) updateIndicator(activeBtn);
+            }, 150);
+        }, { passive: true });
+    </script>
+</body>
+</html>

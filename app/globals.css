@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Changa:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'IBM Plex Sans Arabic', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+  h1, h2, h3, h4, .font-display {
+    font-family: 'Changa', 'IBM Plex Sans Arabic', sans-serif;
+  }
+  .font-mono, code, pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Tactical Calm Neon Glowing Animations & Utilities */
+@keyframes ambientGlow {
+  0%, 100% {
+    opacity: 0.4;
+    filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.25));
+  }
+  50% {
+    opacity: 0.75;
+    filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.5));
+  }
+}
+
+@keyframes neonPulseSky {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
+    border-color: rgba(56, 189, 248, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 22px rgba(56, 189, 248, 0.45);
+    border-color: rgba(56, 189, 248, 0.8);
+  }
+}
+
+@keyframes neonPulseAmber {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(245, 158, 11, 0.2);
+    border-color: rgba(245, 158, 11, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 22px rgba(245, 158, 11, 0.45);
+    border-color: rgba(245, 158, 11, 0.8);
+  }
+}
+
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(1000%);
+  }
+}
+
+@keyframes radar-sweep {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.radar-sweep-anim {
+  animation: radar-sweep 4s linear infinite;
+  transform-origin: center;
+}
+
+.ambient-glow-anim {
+  animation: ambientGlow 5s ease-in-out infinite;
+}
+
+.neon-border-emerald {
+  border: 1px solid rgba(16, 185, 129, 0.5);
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.15), inset 0 0 15px rgba(16, 185, 129, 0.05);
+}
+
+.neon-border-sky {
+  animation: neonPulseSky 4s ease-in-out infinite;
+}
+
+.neon-border-amber {
+  animation: neonPulseAmber 4s ease-in-out infinite;
+}
+
+.tactical-scanline {
+  position: relative;
+  overflow: hidden;
+}
+
+.tactical-scanline::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(52, 211, 153, 0.6), transparent);
+  animation: scanline 8s linear infinite;
+  pointer-events: none;
+}
+
+/* Custom scrollbar for tactical dashboard */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #059669;
+}
