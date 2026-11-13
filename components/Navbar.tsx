@@ -5,7 +5,7 @@ import { motion } from "motion/react";
 import {
   Volume2, VolumeX, Lock,
   Home, History, Layers, MapPin, Activity,
-  Zap, Compass, Calculator, FileText
+  Zap, Compass, Calculator
 } from "lucide-react";
 import { tacticalAudio } from "@/lib/audio";
 import MinistryOfDefenseLogo from "@/components/MinistryOfDefenseLogo";
@@ -18,7 +18,7 @@ interface NavbarProps {
   alertMode: boolean;
   setAlertMode?: (v: boolean) => void;
   onLockGate?: () => void;
-  userClearance?: { name: string; role: string; level: string; code?: string } | null;
+  userClearance?: { name: string; role: string; level: string; code: string } | null;
 }
 
 export default function Navbar({
@@ -41,21 +41,18 @@ export default function Navbar({
   const navItems = [
     { id: "home_overview", label: "الرئيسية والتحليل", icon: Home },
     { id: "historical_origin", label: "أصل الفكرة WW2", icon: History },
-    { id: "blueprint", label: "المخطط الهيكلي ومواصفات البناء", icon: Layers },
+    { id: "blueprint", label: "المخطط الهيكلي", icon: Layers },
     { id: "tactical_map", label: "الخريطة 3D", icon: MapPin },
     { id: "structural", label: "ممتصات الصدمات", icon: Activity },
     { id: "lightning", label: "مانعات الصواعق", icon: Zap },
     { id: "simulator", label: "محاكي الاشتباك", icon: Compass },
     { id: "calculator", label: "حاسبة الحمولات", icon: Calculator },
-    { id: "print_dossier", label: "مخططات الطباعة", icon: FileText },
   ];
 
   return (
     <header className="sticky top-0 z-50 bg-slate-950/95 backdrop-blur-md border-b border-slate-800 shadow-2xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Row 1: Brand title, operational status, centered logo */}
         <div className="relative flex items-center justify-between h-16 sm:h-20 gap-2 sm:gap-4">
-          {/* Brand & System Status (Right in RTL) */}
           <div className="flex items-center gap-2.5 z-10 shrink-0">
             <span className={`w-3 h-3 rounded-full shrink-0 ${alertMode ? "bg-red-500 animate-ping" : "bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.8)]"}`} />
             <div className="flex flex-col">
@@ -68,21 +65,19 @@ export default function Navbar({
             </div>
           </div>
 
-          {/* Centered Ministry of Defense Logo Zone */}
           <div className="flex items-center justify-center z-10 py-1">
             <div className="px-2.5 py-1.5 rounded-xl bg-slate-900/80 border border-emerald-500/30 shadow-[0_0_22px_rgba(16,185,129,0.18)] backdrop-blur-md hover:border-emerald-400/60 hover:shadow-[0_0_30px_rgba(16,185,129,0.3)] transition-all duration-300">
               <MinistryOfDefenseLogo size={44} showText={true} textPosition="side" />
             </div>
           </div>
 
-          {/* Actions & Controls Zone (Left in RTL) */}
           <div className="flex items-center gap-2 sm:gap-2.5 shrink-0 z-10">
             {onLockGate && (
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={onLockGate}
-                title="قفل المنظومة وتغيير التصريح الأمني"
+                title="قفل المنظومة"
                 className="p-2 rounded-lg border border-slate-800 bg-slate-900 hover:border-red-500/60 text-slate-400 hover:text-red-400 transition-colors text-xs flex items-center gap-1 cursor-pointer"
               >
                 <Lock className="w-3.5 h-3.5" />
@@ -106,9 +101,8 @@ export default function Navbar({
           </div>
         </div>
 
-        {/* Row 2: Harmonious, full-width responsive grid of tabs */}
         <div className="py-2 border-t border-slate-800/80">
-          <nav className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-1.5 relative">
+          <nav className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-1.5 relative">
             {navItems.map((item) => {
               const active = activeTab === item.id;
               const IconComp = item.icon;
